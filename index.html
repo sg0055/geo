@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- <link rel='stylesheet' href="bulma.css"> <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>  -->
+    <title> Geo Locator</title>
+  </head>
+<body>
+  <section class="hero is-dark is-fullheight">
+    <!-- Hero head: will stick at the top -->
+    <div class="hero-head">
+      <header class="navbar">
+        <div class="container">
+          <div class="navbar-brand">
+            <a class="navbar-item">
+              <img src="sgprofile.png" alt="Logo">
+              <span class='px-3'>
+            <strong class='is-size-2 is-light'>Geo Locator </strong>
+            </span>
+            </a>
+          </div>
+        </div>
+      </header>
+    </div>
+
+
+    <div class="hero-body">
+
+      <div class="container has-text-centered">
+        <article id='err' class="message is-danger">
+  <div class="message-header">
+    <p>ERROR</p>
+    <button class="delete is-medium" aria-label="delete" onclick="close_msg()"></button>
+  </div>
+  <div class="message-body" id='err_msg'>
+
+  </div>
+</article>
+        <div class="columns is-multilined">
+          <div class="column is-half">
+            <div class='box'>
+
+                 <p id='demo' class="title has-text-grey-dark is-size-5-mobile">
+                   <span class='has-text-grey-light'>Press Find or Watch<span>
+                 </p>
+
+          </div>
+            <div class="columns is-mobile">
+              <div class="column">
+                <button class="button is-medium is-info my-5" onclick="getLocation()">Find</button>
+              </div>
+              <div class="column">
+                <button class="button is-primary is-medium my-5" onclick="watchLocation()">Watch</button>
+              </div>
+            </div>
+      </div>
+    </div>
+
+
+    </div>
+    </div></div>
+
+
+    <div class="hero-foot">
+      <nav class="tabs is-boxed is-fullwidth">
+
+          <ul>
+            <li class="is-active"><a href='https://shivam-gupta.netlify.app/'>This website is developed by
+              Shivam Gupta</a></li>
+
+          </ul>
+        </div>
+      </nav>
+  </section>
+<script>
+console.log('hello');
+var x = document.getElementById("demo");
+var load = '<progress class="progress is-small is-primary" max="100">15%</progress>' +
+             '<progress class="progress is-small is-danger" max="100">15%</progress>' +
+             '<progress class="progress is-small is-warning" max="100">15%</progress>';
+var e = document.getElementById("err");
+e.style.display='none';
+function getLocation() {
+  x.innerHTML= load;
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, showError);
+  } else {
+    e.style.visibility='block';
+  x.innerHTML= 'Try Again...';
+    document.getElementById("err_msg").innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function watchLocation() {
+  x.innerHTML= load;
+
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(showPosition,showError);
+  } else {
+    e.style.visibility='block';
+    document.getElementById("err_msg").innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+
+function showPosition(position) {
+  x.innerHTML = "Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude;
+}
+
+function showError(error) {
+  x.innerHTML= 'Try Again...';
+  e.style.display='block';
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      document.getElementById("err_msg").innerHTML = "User denied the request for Geolocation."
+      break;
+    case error.POSITION_UNAVAILABLE:
+      document.getElementById("err_msg").innerHTML = "Location information is unavailable."
+      break;
+    case error.TIMEOUT:
+      document.getElementById("err_msg").innerHTML = "The request to get user location timed out."
+      break;
+    case error.UNKNOWN_ERROR:
+      document.getElementById("err_msg").innerHTML = "An unknown error occurred."
+      break;
+  }
+}
+
+function close_msg(){
+  e.style.display='none';
+  x.innerHTML= 'Try Again...';
+  document.getElementById("err_msg").innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
